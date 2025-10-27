@@ -1,0 +1,346 @@
+'''
+import random
+def spin_row():
+    symblos = ['🍒', '🍉', '🍋', '🔔', '⭐']
+    return [random.choice(symblos)for _ in range(3)]
+
+def print_row(row):
+    print('***************')
+    print(' | '.join(row))
+    print('***************')
+def get_pay(row, bet):
+    if row[0] == row[1] ==row[2]:
+        if row[0] == '🍒':
+            return bet * 3
+        elif row[0] == '🍉':
+            return bet * 6
+        elif row[0] == '🍋':
+            return bet * 9
+        elif row[0] == '🔔':
+            return bet * 12
+        elif row[0] == '⭐':
+            return bet * 15
+    return 0
+        
+while True:       
+    choice = input('Do you want play hte game: ')
+    if choice == 'y':
+        def main():
+            balance = 100
+            print('*******************')
+            print('Wellcome to the game')
+            print('*******************')
+            print('Symblos:🍒 🍉 🍋 🔔 ⭐ ')
+
+            while True:
+                    
+                    print(f'The current balance you heve is: {balance}')
+                    bet = input('Enter the amount you would like to bet on(or q to quit): ')
+                    if bet == 'q':
+                        break
+                    if bet.isdigit():
+                        bet = int(bet)
+                        
+                        if bet <= 0:
+                            print('Please enter number grater than zero')
+                            continue
+                        elif bet > balance:
+                            print('Bet can not be grater than your balence')
+                            continue
+                    else:
+                        print('Enter a valid number')
+                        continue
+                    balance -= bet
+                    row = spin_row()
+                    print('Spinning....\n')
+                    print_row(row)
+                    
+                    payment = get_pay(row, bet)
+                    if payment > 0:
+                        print(f'You have won: {payment}')
+                    else:
+                        print(f'Sorry! you did not won on this round')
+                    if balance <= 0:
+                        print("You're out of money 💸. Game over!")
+                        break
+
+                    balance += payment 
+                
+        if __name__ == '__main__':
+            main()
+    elif choice == 'n':
+        print('Exiting')
+        break
+    else:
+        print('Please insert valid input')
+        
+        
+import random
+words = {'apple', 'orange', 'kiwi', 'pinapple', 'bannan', 'pear', 'mango'}
+hang_man = {0: ('  ',
+               '    ',
+               '    '),
+            1: (' o  ',
+               '    ',
+               '    '),
+            2: (' o  ',
+               '  |  ',
+               '    '),
+            3: (' o  ',
+               ' /|  ',
+               '    '),
+            4: (' o  ',
+               ' /|\\ ',
+               '     '),
+            5: (' o  ',
+               ' /|\\ ',
+               ' /   '),
+            6: (' o  ',
+               ' /|\\',
+               ' / \\ ')
+    
+}     
+
+def display_man(wrong_answer):
+    pass
+def display_hint(hint):
+    pass
+def display_answer(answer):
+    pass
+
+def main():
+    answer = random.choice(words)
+    #hint = ['_'] * len(answer)
+    print(answer)
+
+if __name__ == '__main__':
+    main()
+
+
+import random
+import string
+
+chars = '  '+ string.punctuation + string.digits + string.ascii_letters
+
+chars = list(chars)
+key = chars.copy()
+
+random.shuffle(key)
+
+#print(f'chars: {chars}')
+#print(f'key: {key}')
+#ENCRPT
+
+text = input('Enter a text: ')
+cipher_text = ''
+
+for letter in text:
+    index = chars.index(letter)
+    cipher_text += key[index]
+    
+print(f'Original message: {text}')
+print(f'Encrypted text: {cipher_text}')
+
+#print(f'chars: {chars}')
+#print(f'key: {key}')
+#DECRPT
+
+cipher_text = input('Enter a text: ')
+text = ''
+
+for letter in cipher_text:
+    index = key.index(letter)
+    text += chars[index]
+    
+print(f'Encrypted text: {cipher_text}')
+print(f'Original message: {text}')
+
+import random
+words = {'apple', 'orange', 'kiwi', 'pineapple', 'banana', 'pear', 'mango'}
+hang_man = {
+    0: ('     ',
+        '     ',
+        '     '),
+    1: (' o   ',
+        '     ',
+        '     '),
+    2: (' o   ',
+        ' |   ',
+        '     '),
+    3: (' o   ',
+        '/|   ',
+        '     '),
+    4: (' o   ',
+        '/|\\  ',
+        '     '),
+    5: (' o   ',
+        '/|\\  ',
+        '/    '),
+    6: (' o   ',
+        '/|\\  ',
+        '/ \\  ')
+}     
+
+def display_man(wrong_guesses):
+    print('------------------')
+    for line in hang_man[wrong_guesses]:
+        print(line)
+    print('------------------')
+        
+def display_hint(hint):
+    print(' '.join(hint))
+    
+def display_answer(answer):
+    print(' '.join(answer))
+
+def play_game():
+    answer = random.choice(list(words))
+    hint = ['_'] * len(answer)
+    wrong_guesses = 0
+    guessed_letters = set()
+    is_running = True
+    
+    while is_running:
+        display_man(wrong_guesses)
+        display_hint(hint)
+        guess = input('Enter your guessed letter: ').lower()
+        
+        if len(guess) != 1 or not guess.isalpha():
+            print('Invalid input')
+            continue
+        if guess in guessed_letters:
+            print(f'{guess} is alrady guessed' )
+            continue
+        
+        guessed_letters.add(guess)
+        
+        if guess in answer:
+            for i in range(len(answer)):
+                if answer[i] == guess:
+                    hint[i] = guess
+        else:
+            wrong_guesses += 1
+            
+        if '_' not in hint:
+            display_man(wrong_guesses)
+            display_answer(answer)
+            print('YOU WIN')
+            is_running = False
+        elif wrong_guesses >= len(hang_man) - 1:
+            display_man(wrong_guesses)
+            display_answer(answer)
+            print('YOU LOSE')
+                
+def main():
+    while True:
+        play_game()
+        ch = input('Do you want to continue the game(y/n): ')
+        if ch =='y':
+            continue
+        else:
+            break
+                
+                    
+        
+if __name__ == '__main__':
+    main()
+    
+    
+sum_odd_digits = 0
+sum_even_digits = 0
+total = 0
+
+card_num = input('Enter the a credit card number: ')
+card_num = card_num.replace('-','')
+card_num = card_num.replace(' ','')
+card_num = card_num[::-1]
+
+for x in card_num[::2]:
+    sum_odd_digits += int(x)
+    
+for x in card_num[1::2]:
+    x = int(x)*2
+    if x >= 10:
+        sum_even_digits += (1 + (x% 10))
+    else:
+        sum_even_digits += x
+total = sum_odd_digits + sum_even_digits
+
+if total % 10 == 0:
+    print('You credit card number is vaild')
+else:
+    print('You credit card number is not vaild')
+
+    
+questions = [ 
+    {"Question" : "Who painted the Mona Lisa?",
+    "Option": ["Leonardo da Vinci" , "Pablo Picasso" ,  "Vincent van Gogh" , "Michelangelo"],
+    "Answer ": "Leonardo da Vinci"},
+
+    {"Question" : "What is the capital city of Australia?",
+    "Option" : ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+    "Answer": "Canberra"
+
+    },
+
+    {"Question" : "Which planet is known as the Red Planet?",
+    "Option" : ["Earth", "Venus", "Mars", "Jupiter"],
+    "Answer": "Mars"
+
+    },
+
+    {"Question" : "What is the largest mammal in the world?",
+    "Option" : ["African Elephant", "Blue Whale", "Giraffe", "Orca"],
+    "Answer": "Blue Whale"},
+
+    {"Question" : "Which element has the chemical symbol 'O'?",
+    "Option" : ["Oxygen", "Gold", "Osmium", "Iron"],
+    "Answer": "Oxygen"},
+
+    {"Question" : "Who discovered penicillin?",
+    "Option" : ["Marie Curie", "Alexander Fleming", "Louis Pasteur", "Joseph Lister"],
+    "Answer": "Alexander Fleming"},
+
+    {"Question" : "What is the longest river in the world?",
+    "Option" : ["Amazon", "Yangtze", "Nile", "Mississippi"],
+    "Answer": "Nile"},
+
+    {"Question" : "Which language has the most native speakers?",
+    "Option" : ["English", "Spanish", "Mandarin Chinese", "Hindi"],
+    "Answer": "Mandarin Chinese"},
+
+    {"Question" : "In which year did World War II end?",
+    "Option" : ["1945", "1939", "1918", "1950"],
+    "Answer": "1945"},
+
+    {"Question" : "What is the smallest prime number?",
+    "Option" : ["1", "2", "3", "5"],
+    "Answer": "2"}
+    ]
+score = 0
+
+def get_question(questions):
+    global score
+    
+    for idx, question in enumerate(questions, 1):
+        print(f"\nQuestion {idx}: {question['Question']}")
+        letters = ['a', 'b', 'c', 'd']
+        for i,option in enumerate(question['Option']):
+            print(f"{letters[i]}. {option}")
+        answer = input('Enter your answer(a/b/c/d): ').lower()
+        if answer in letters:
+            chosen_option = question['Option'][letters.index(answer)]
+            if chosen_option == question['Answer']:
+                print('You have got the correct answer')
+                score += 1
+            else:
+                print('You have not gor the correct answer')
+                print(f"The correct answer is {question['Answer']}")
+    print(f'Your score is {score}')
+    
+def main():
+    de= get_question(questions)
+
+main()
+'''
+
